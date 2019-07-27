@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AlbumDemo</string>
+    <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+</resources>

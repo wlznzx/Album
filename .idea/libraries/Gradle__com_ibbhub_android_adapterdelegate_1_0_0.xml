@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ibbhub.android:adapterdelegate-1.0.0">
+    <CLASSES>
+      <root url="jar://D:/AndroidStuio/.gradle/caches/transforms-1/files-1.1/adapterdelegate-1.0.0.aar/4999c7e31e7e04240ce3a183e8741d3e/jars/classes.jar!/" />
+      <root url="file://D:/AndroidStuio/.gradle/caches/transforms-1/files-1.1/adapterdelegate-1.0.0.aar/4999c7e31e7e04240ce3a183e8741d3e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://D:/AndroidStuio/.gradle/caches/modules-2/files-2.1/com.ibbhub.android/adapterdelegate/1.0.0/e61c33cb3adf7e117f76afdd583f9fb78209e47d/adapterdelegate-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
