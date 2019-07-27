@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TimeAlbum 时间相册
 
 该库是将本地的图片和视频资源进行按时间分类排序并进行展示的相册库。
@@ -241,6 +242,3 @@ class GridDecoration extends RecyclerView.ItemDecoration {
     }
 }
 ```
-
-#### GITHUB
-https://github.com/chezi008/TimeAlbum
