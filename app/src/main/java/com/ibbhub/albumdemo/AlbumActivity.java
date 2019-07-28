@@ -26,6 +26,9 @@ import com.ibbhub.albumdemo.bean.PhotoEntry;
 import com.ibbhub.albumdemo.callback.OnEditItemClickListener;
 import com.ibbhub.albumdemo.contract.GooglePhotoContract;
 import com.ibbhub.albumdemo.repository.GooglePhotoScanner;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import java.util.List;
 
@@ -45,30 +48,10 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
         setContentView(R.layout.activity_album);
 
         MyApplication.setApplication(getApplication());
-        initView();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // android.util.Log.d("wlDebug", "GooglePhotoScanner.");
-                GooglePhotoScanner.loadGalleryPhotosAlbums();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFoldersAdapter.setData(GooglePhotoScanner.getImageFloders());
-                        mFoldersAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        }).start();
 
-        floderBtn = findViewById(R.id.folder_btn);
-        floderBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            }
-        });
+        requestPermission();
+
     }
 
     private MenuItem chooseMenu;
@@ -94,7 +77,41 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
 
     private AlbumFragment albumFragment;
 
+    private void requestPermission() {
+        //获取storage权限
+        AndPermission.with(this)
+                .runtime()
+                .permission(Permission.Group.STORAGE)
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        initView();
+                    }
+                })
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+
+                    }
+                })
+                .start();
+    }
+
     private void initView() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // android.util.Log.d("wlDebug", "GooglePhotoScanner.");
+                GooglePhotoScanner.loadGalleryPhotosAlbums();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mFoldersAdapter.setData(GooglePhotoScanner.getImageFloders());
+                        mFoldersAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         albumFragment = (AlbumFragment) getSupportFragmentManager().findFragmentByTag("album");
@@ -139,6 +156,14 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
                 android.util.Log.d("wlDebug", "" + _path);
                 ((MyAlbumFragment) albumFragment).setAlbumSrc(_path);
                 albumFragment.initData();
+            }
+        });
+
+        floderBtn = findViewById(R.id.folder_btn);
+        floderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
