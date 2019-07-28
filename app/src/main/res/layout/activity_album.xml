@@ -34,7 +34,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="6dp"
+            android:layout_height="2dp"
             android:src="@drawable/shadow" />
 
         <LinearLayout
@@ -58,5 +58,15 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/folder_btn"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#f4f4f4"
+        android:gravity="center"
+        android:text="选择文件夹"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.design.widget.CoordinatorLayout>

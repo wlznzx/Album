@@ -21,10 +21,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
+
+
     <com.ibbhub.album.AlbumBottomMenu
         android:id="@+id/album_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"></com.ibbhub.album.AlbumBottomMenu>
+
 </android.support.constraint.ConstraintLayout>

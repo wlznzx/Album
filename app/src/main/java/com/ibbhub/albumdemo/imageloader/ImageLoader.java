@@ -36,7 +36,7 @@ public class ImageLoader {
     }
 
     public void loadImage(Context context, String url, ImageView imageView) {
-        android.util.Log.d("wlDebug", "url = " + url);
+        // android.util.Log.d("wlDebug", "url = " + url);
 //        mProxy.loadImage(context, url, imageView);
         loadGalleryImage(context,url,imageView);
     }

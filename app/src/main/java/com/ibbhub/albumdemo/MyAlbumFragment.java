@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.ibbhub.album.AlbumBean;
 import com.ibbhub.album.AlbumFragment;
 import com.ibbhub.album.ITaDecoration;
+import com.ibbhub.album.TaHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,17 +21,27 @@ import java.util.List;
  * @email ：chezi008@163.com
  */
 public class MyAlbumFragment extends AlbumFragment {
+
+    private String albumPath;
+
+    public void setAlbumSrc(String path) {
+        albumPath = path;
+        TaHelper.getInstance()
+                .setSrcFiles(buildAlbumSrc());
+    }
+
     @Override
     public List<File> buildAlbumSrc() {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/DCIM/Camera";
         String path2 = Environment.getExternalStorageDirectory().getAbsolutePath()
                 + "/DCIM/";
-//        String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-//                + "/GySoldier/430001/videoRecord";
         List<File> fileList = new ArrayList<>();
-        fileList.add(new File(path));
-        fileList.add(new File(path2));
+        if (albumPath == null) {
+            fileList.add(new File(path));
+        } else {
+            fileList.add(new File(albumPath));
+        }
         return fileList;
     }
 
@@ -41,7 +52,7 @@ public class MyAlbumFragment extends AlbumFragment {
 
     @Override
     public String fileProviderName() {
-        return BuildConfig.APPLICATION_ID+".provider";
+        return BuildConfig.APPLICATION_ID + ".provider";
     }
 
     @Override
@@ -62,7 +73,7 @@ public class MyAlbumFragment extends AlbumFragment {
 
     @Override
     public void onChooseModeChange(boolean isChoose) {
-        ((AlbumActivity)getActivity()).onChooseModeChange(isChoose);
+        ((AlbumActivity) getActivity()).onChooseModeChange(isChoose);
     }
 
     public static RequestOptions buildOptions() {

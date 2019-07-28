@@ -59,6 +59,7 @@ public class GooglePhotoScanner {
             MediaStore.Images.Media.LATITUDE};
 
     public static void loadGalleryPhotosAlbums() {
+        albumsSorted.clear();
         //获取ContentResolver
         ContentResolver contentResolver = MyApplication.getContext().getContentResolver();
         // 查询范围
@@ -100,7 +101,7 @@ public class GooglePhotoScanner {
                     int bucketId = cursor.getInt(bucketIdColumn);
                     String bucketName = cursor.getString(bucketNameColumn);
                     String path = cursor.getString(dataColumn);
-                    android.util.Log.d("wlDebug", "path = " + path);
+                    // android.util.Log.d("wlDebug", "path = " + path);
                     long takendate = cursor.getLong(dateColumn);
                     int orientation = cursor.getInt(orientationColumn);
                     int size = cursor.getInt(imageSizeColumn);

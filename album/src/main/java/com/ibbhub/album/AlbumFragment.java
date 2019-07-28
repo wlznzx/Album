@@ -48,6 +48,8 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
     private RecyclerView rc_list;
     private ProgressBar pb_loading;
     private AlbumBottomMenu album_menu;
+//    private View folderBtn;
+    private OnChooseModeListener mOnChooseModeListener;
 
     private List<TimeBean> choosedCache = new ArrayList<>();
 
@@ -134,7 +136,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
     private void initView(View view) {
         pb_loading = view.findViewById(R.id.pb_loading);
         album_menu = view.findViewById(R.id.album_menu);
-
+//        folderBtn = view.findViewById(R.id.folder_btn);
         rc_list = view.findViewById(R.id.rc_list);
         mAdapter = new TimeAdapter(mData);
 
@@ -153,6 +155,10 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
                 processShare();
             }
         });
+    }
+
+    public void setOnChooseModeListener(OnChooseModeListener mOnChooseModeListener) {
+        this.mOnChooseModeListener = mOnChooseModeListener;
     }
 
     /**
@@ -174,8 +180,12 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
 
     private Calendar cal1 = Calendar.getInstance();
 
-    private void initData() {
+    public void initData() {
         List<File> fileList = TaHelper.getInstance().getSrcFiles();
+        for (File _file : fileList) {
+            android.util.Log.d("wlDebug", "fileList = " + _file.getAbsolutePath());
+        }
+//        android.util.Log.d("wlDebug", "fileList.size = " + fileList.size());
         Observable.fromIterable(fileList)
                 .flatMapIterable(new Function<File, Iterable<File>>() {
                     @Override
@@ -231,10 +241,10 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
                     @Override
                     public void accept(List<TimeBean> timeBeans, Throwable throwable) throws Exception {
                         if (timeBeans != null) {
+                            mData.clear();
                             mData.addAll(timeBeans);
                             sortList();
                         }
-
                     }
                 });
 
@@ -340,6 +350,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
         isChooseMode = false;
         TaHelper.getInstance().onChooseModeChange(isChooseMode);
         mAdapter.notifyDataSetChanged();
+        if(mOnChooseModeListener != null)mOnChooseModeListener.onChooseMode(isChooseMode);
         album_menu.setVisibility(View.GONE);
     }
 
@@ -350,6 +361,8 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
         isChooseMode = true;
         TaHelper.getInstance().onChooseModeChange(true);
         mAdapter.notifyDataSetChanged();
+//        folderBtn.setVisibility(View.GONE);
+        if(mOnChooseModeListener != null)mOnChooseModeListener.onChooseMode(isChooseMode);
         album_menu.setVisibility(View.VISIBLE);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
  * @description ：Single instance
  * @email ：chezi008@163.com
  */
- class TaHelper {
+ public class TaHelper {
 
     private List<File> srcFiles = new ArrayList<>();
     private TimeAlbumListener timeAlbumListener;

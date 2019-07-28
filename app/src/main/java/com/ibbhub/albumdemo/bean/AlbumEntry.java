@@ -90,4 +90,14 @@ public class AlbumEntry implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "AlbumEntry{" +
+                "bucketId=" + bucketId +
+                ", bucketName='" + bucketName + '\'' +
+                ", coverPhoto=" + coverPhoto +
+                ", camera=" + camera +
+                ", selectedCount=" + selectedCount +
+                '}';
+    }
 }
