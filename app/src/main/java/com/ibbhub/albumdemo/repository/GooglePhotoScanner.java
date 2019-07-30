@@ -69,7 +69,7 @@ public class GooglePhotoScanner {
                 + MediaStore.Images.Media.MIME_TYPE + "=? or "
                 + MediaStore.Images.Media.MIME_TYPE + "=?";
         // 条件值
-        String[] selectionArgs = {"image/jpeg", "image/png", "image/webp"};
+        String[] selectionArgs = {"image/jpeg", "image/png", "image/webp,image/pjpeg"};
         // 排序
         String sortOrder = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 
@@ -101,7 +101,7 @@ public class GooglePhotoScanner {
                     int bucketId = cursor.getInt(bucketIdColumn);
                     String bucketName = cursor.getString(bucketNameColumn);
                     String path = cursor.getString(dataColumn);
-                    // android.util.Log.d("wlDebug", "path = " + path);
+
                     long takendate = cursor.getLong(dateColumn);
                     int orientation = cursor.getInt(orientationColumn);
                     int size = cursor.getInt(imageSizeColumn);
@@ -111,10 +111,11 @@ public class GooglePhotoScanner {
                     double longitude = cursor.getDouble(longitudeColumn);
                     double latitude = cursor.getDouble(latitudeColumn);
 
-                    if (TextUtils.isEmpty(path) || size < MIN_SIZE || takendate > currentTime) {
+                    if (TextUtils.isEmpty(path) || size < MIN_SIZE) {
                         continue;
                     }
 
+                    // android.util.Log.d("wlDebug", "path = " + path + " bucketId = " + bucketId);
                     PhotoEntry photoEntry = new PhotoEntry(id, bucketId, bucketName, path, width, height, size, latitude, longitude, 0, orientation, takendate, modified);
                     mAllPhotos.add(photoEntry);
                     AlbumEntry albumEntry = albums.get(bucketId);

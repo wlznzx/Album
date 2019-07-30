@@ -1,8 +1,10 @@
 package com.ibbhub.albumdemo;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
@@ -15,10 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ibbhub.album.AlbumFragment;
 import com.ibbhub.album.OnChooseModeListener;
-import com.ibbhub.album.TaHelper;
 import com.ibbhub.albumdemo.adapter.PhotoFoldersAdapter;
 import com.ibbhub.albumdemo.application.MyApplication;
 import com.ibbhub.albumdemo.bean.AlbumEntry;
@@ -42,6 +45,10 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
 
     private View floderBtn;
 
+    private TextView cameraPhotoTV;
+
+    private TextView albumPhotoTV;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +56,7 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
 
         MyApplication.setApplication(getApplication());
 
-
         requestPermission();
-
     }
 
     private MenuItem chooseMenu;
@@ -143,9 +148,22 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 
             }
-
-
         });
+
+        cameraPhotoTV = findViewById(R.id.camera_photo_tv);
+        cameraPhotoTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraPhotoTV.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                albumPhotoTV.setTextColor(getResources().getColor(android.R.color.black));
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/DCIM/Camera";
+                ((MyAlbumFragment) albumFragment).setAlbumSrc(path);
+                albumFragment.initData();
+            }
+        });
+        albumPhotoTV = findViewById(R.id.album_photo_tv);
+
         mFoldersAdapter = new PhotoFoldersAdapter();
         mRvFiledir.setAdapter(mFoldersAdapter);
         mFoldersAdapter.setOnItemClickListener(new OnEditItemClickListener() {
@@ -156,14 +174,25 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
                 android.util.Log.d("wlDebug", "" + _path);
                 ((MyAlbumFragment) albumFragment).setAlbumSrc(_path);
                 albumFragment.initData();
+                cameraPhotoTV.setTextColor(getResources().getColor(android.R.color.black));
+                albumPhotoTV.setTextColor(getResources().getColor(android.R.color.holo_blue_dark));
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 
         floderBtn = findViewById(R.id.folder_btn);
-        floderBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.album_photo_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        findViewById(R.id.to_camera_iv).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCamera();
             }
         });
     }
@@ -248,7 +277,6 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
 
     @Override
     public void photoPreviewAdd() {
-
     }
 
     @Override
@@ -271,4 +299,23 @@ public class AlbumActivity extends AppCompatActivity implements GooglePhotoContr
             floderBtn.setVisibility(View.VISIBLE);
         }
     }
+
+    private void showCamera() {
+        // 跳转到系统照相机
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            // 设置系统相机拍照后的输出路径
+            // 创建临时文件
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            ComponentName cn = new ComponentName("com.mediatek.camera", "com.mediatek.camera.CameraActivity");
+            intent.setComponent(cn);
+            startActivity(intent);
+//            startActivity(cameraIntent);
+        } else {
+//            Toast.makeText(getApplicationContext(), R.string.msg_no_camera, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 }

@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnAlbum).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlbumActivity.start(MainActivity.this);
             }
         });
