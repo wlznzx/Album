@@ -197,7 +197,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
                     @Override
                     public boolean test(File it) throws Exception {
 //                        Log.d(TAG, "test: "+it.getAbsolutePath());
-                        return it.getName().endsWith(".jpg") || it.getName().endsWith(".mp4");
+                        return it.getName().endsWith(".jpg") || it.getName().endsWith(".mp4") || it.getName().endsWith(".3gp");
                     }
                 })
                 .map(new Function<File, AlbumBean>() {

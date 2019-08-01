@@ -26,7 +26,7 @@ import chuangyuan.ycj.videolibrary.widget.VideoPlayerView;
  class PreviewVideoDelegate extends AdapterDelegate<List<AlbumBean>> {
     @Override
     public boolean isForViewType(@NonNull List<AlbumBean> items, int position) {
-        return items.get(position).path.endsWith(".mp4");
+        return items.get(position).path.endsWith(".mp4") || items.get(position).path.endsWith(".3gp");
     }
 
     @NonNull
