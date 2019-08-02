@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,7 +49,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
     private RecyclerView rc_list;
     private ProgressBar pb_loading;
     private AlbumBottomMenu album_menu;
-//    private View folderBtn;
+    //    private View folderBtn;
     private OnChooseModeListener mOnChooseModeListener;
 
     private List<TimeBean> choosedCache = new ArrayList<>();
@@ -291,7 +292,9 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
             for (int i = 0; i < choosedCache.size(); i++) {
                 for (AlbumBean mb :
                         choosedCache.get(i).itemList) {
-                    uriList.add(Uri.fromFile(new File(mb.path)));
+                    Uri imageUri = FileProvider.getUriForFile(getContext(), "cn.launcher.album.provider", new File(mb.path));
+                    // uriList.add(Uri.fromFile(new File(mb.path)));
+                    uriList.add(imageUri);
                 }
             }
             TaShareManager.getInstance().openShare(getContext(), uriList);
@@ -350,7 +353,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
         isChooseMode = false;
         TaHelper.getInstance().onChooseModeChange(isChooseMode);
         mAdapter.notifyDataSetChanged();
-        if(mOnChooseModeListener != null)mOnChooseModeListener.onChooseMode(isChooseMode);
+        if (mOnChooseModeListener != null) mOnChooseModeListener.onChooseMode(isChooseMode);
         album_menu.setVisibility(View.GONE);
     }
 
@@ -362,7 +365,7 @@ public abstract class AlbumFragment extends Fragment implements TimeAlbumListene
         TaHelper.getInstance().onChooseModeChange(true);
         mAdapter.notifyDataSetChanged();
 //        folderBtn.setVisibility(View.GONE);
-        if(mOnChooseModeListener != null)mOnChooseModeListener.onChooseMode(isChooseMode);
+        if (mOnChooseModeListener != null) mOnChooseModeListener.onChooseMode(isChooseMode);
         album_menu.setVisibility(View.VISIBLE);
     }
 

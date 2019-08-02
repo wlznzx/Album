@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @description ：The share manager of album
  * @email ：chezi008@163.com
  */
- class TaShareManager {
+class TaShareManager {
     private TaShareManager() {
 
     }
@@ -41,20 +41,20 @@ import java.util.ArrayList;
             throw new NullPointerException("请在 albumfragment 设置fileProviderName");
         }
 //        BuildConfig.APPLICATION_ID + ".provider"
-        Uri imageUri =FileProvider.getUriForFile(ctx, fileProviderName, new File(path));
+        android.util.Log.d("wlDebug","fileProviderName = " + fileProviderName);
+        Uri imageUri = FileProvider.getUriForFile(ctx, fileProviderName, new File(path));
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-        shareIntent.setType(path.endsWith(".mp4") ? "video/*" : "image/*");
+        shareIntent.setType(path.endsWith(".mp4") || path.endsWith(".3gp") ? "video/*" : "image/*");
         ctx.startActivity(Intent.createChooser(shareIntent, "分享到"));
     }
 
     /**
-     *
      * @param ctx
      * @param uris
      */
-    public void openShare(Context ctx,ArrayList<Uri> uris){
+    public void openShare(Context ctx, ArrayList<Uri> uris) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
         shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
