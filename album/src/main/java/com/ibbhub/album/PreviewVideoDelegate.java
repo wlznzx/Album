@@ -1,21 +1,18 @@
 package com.ibbhub.album;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.ibbhub.adapterdelegate.AdapterDelegate;
 
 import java.util.List;
 
-import chuangyuan.ycj.videolibrary.listener.VideoInfoListener;
-import chuangyuan.ycj.videolibrary.video.ManualPlayer;
+import chuangyuan.ycj.videolibrary.video.ExoUserPlayer;
+import chuangyuan.ycj.videolibrary.video.VideoPlayerManager;
 import chuangyuan.ycj.videolibrary.widget.VideoPlayerView;
 
 /**
@@ -23,7 +20,7 @@ import chuangyuan.ycj.videolibrary.widget.VideoPlayerView;
  * @description ：
  * @email ：chezi008@163.com
  */
- class PreviewVideoDelegate extends AdapterDelegate<List<AlbumBean>> {
+class PreviewVideoDelegate extends AdapterDelegate<List<AlbumBean>> {
     @Override
     public boolean isForViewType(@NonNull List<AlbumBean> items, int position) {
         return items.get(position).path.endsWith(".mp4") || items.get(position).path.endsWith(".3gp");
@@ -44,7 +41,7 @@ import chuangyuan.ycj.videolibrary.widget.VideoPlayerView;
         //thumb
         pHolder.vp.getPreviewImage().setScaleType(ImageView.ScaleType.FIT_CENTER);
         TaHelper.getInstance().loadImage(mb.path, pHolder.vp.getPreviewImage());
-
+        /*
         pHolder.mp.setTag(position);
         pHolder.mp.setPlayUri(mb.path);
         pHolder.mp.addVideoInfoListener(new VideoInfoListener() {
@@ -73,16 +70,20 @@ import chuangyuan.ycj.videolibrary.widget.VideoPlayerView;
 
             }
         });
+        */
+        pHolder.exoPM.setPlayUri(mb.path);
     }
 
     static class PreviewVideoHolder extends RecyclerView.ViewHolder {
         public VideoPlayerView vp;
-        public ManualPlayer mp;
+        // public ManualPlayer mp;
+        public ExoUserPlayer exoPM;
 
         public PreviewVideoHolder(View itemView) {
             super(itemView);
             vp = itemView.findViewById(R.id.exo_play_context_id);
-            mp = new ManualPlayer((Activity) itemView.getContext(), vp);
+            // mp = new ManualPlayer((Activity) itemView.getContext(), vp);
+            exoPM = new VideoPlayerManager.Builder(VideoPlayerManager.TYPE_PLAY_USER, vp).create();
         }
     }
 }
